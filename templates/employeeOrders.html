@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet"
+        href="{{ url_for('static', filename='css/cust.css') }}"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+{% endblock %}
+
+
+{% block body %}
+    <div class="form-container">
+{% for i in range(orderKeys|length) %}
+<div style="border: black solid; padding-left: 5px;padding-top: 5px;margin-bottom: 3%">
+    <h4>{{ orderKeys[i] }}</h4>
+<p><b>Instructions:</b> {{ empList[i]["instructions"] }}</p>
+    <p><b>Estimated Arrival Time:</b> {{ range(1, 51) | random }} Minutes</p>
+
+<details><summary>Items</summary><p>
+    {% for item,values in empList[i]["items"].items() %}
+        <details><summary>{{ item }}</summary><br>
+        <div style="border: black solid; width: 90%; margin: auto; padding-left: 5px">
+        <img src="{{ db.child("product_db").child(values["drink_id"]).get().val()["img"]  }} " style="width:200px;height:200px;padding-top: 10px" class = "drinksubimg"/><br>
+            <b>Base Drink:</b> {{ db.child("product_db").child(values["drink_id"]).get().val()["name"] }}<br>
+            <b>Special Instructions:</b> {{ values['instructions'] }}<br>
+            <b>Size:</b> {{ values['sizeCode'] }}<br>
+            <b>Quantity:</b> {{ values['quantity'] }}<br>
+        <details><summary>Customizations</summary>
+        {% if values['customizations'] == "none"%}
+            none
+        {% else %}
+
+            {% for custOptsK, custOptsV in  values['customizations'].items() %}
+                {% if custOptsK != 'bug_holder' %}
+                <b>{{ db.child("cust_db").child(custOptsK).get().val()["name"] }}:</b> {{ custOptsV }} <br>
+                {% endif %}
+                {% endfor %}
+        {% endif %}
+          </details>
+        </div>
+        </details><br>
+    {% endfor %}
+        </p></details>
+</div>
+{% endfor %}
+  </div>
+
+
+{% endblock %}
