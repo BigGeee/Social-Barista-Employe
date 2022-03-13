@@ -11,7 +11,11 @@
     <div class="form-container">
 {% for i in range(orderKeys|length) %}
 <div style="border: black solid; padding-left: 5px;padding-top: 5px;margin-bottom: 3%">
+    {% if orderKeys[i] == "cart"  %}
     <h4>{{ orderKeys[i] }}</h4>
+    {% else %}
+    <h4>{{ orderKeys[i] }}</h4>
+    {% endif %}
 <p><b>Instructions:</b> {{ empList[i]["instructions"] }}</p>
     <p><b>Estimated Arrival Time:</b> {{ range(1, 51) | random }} Minutes</p>
 
